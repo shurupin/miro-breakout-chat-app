@@ -69,9 +69,7 @@
 </style>
 
 <div class="sidebar__container">
-	<div class="sidebar__header">
-		<span class="miro-h2">Breakout Chat</span>
-	</div>
+	<div class="sidebar__header"><span class="miro-h2">Breakout Chat</span></div>
 	<div class="sidebar__body">
 		{#each messages as message}
 			<Message {message} />
