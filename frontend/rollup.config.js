@@ -76,7 +76,7 @@ export default [
 			}),
 			commonjs(),
 			// noEmirOnError: false is required to prevent killing the process while in the watch mode
-			typescript({sourceMap: !production, noEmitOnError: false}),
+			typescript({inlineSources: !production, sourceMap: !production, noEmitOnError: false}),
 
 			// In dev mode, call `npm run start` once
 			// the bundle has been generated
@@ -102,6 +102,6 @@ export default [
 			name: 'app',
 			file: 'public/init/build/bundle.js',
 		},
-		plugins: [replacePlugin, typescript({sourceMap: !production, noEmitOnError: false}), production && terser()],
+		plugins: [replacePlugin, typescript({inlineSources: !production, sourceMap: !production, noEmitOnError: false}), production && terser()],
 	},
 ]
