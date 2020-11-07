@@ -1,3 +1,5 @@
+import type {User} from './user'
+
 export interface Message {
 	text: string
 	author: string
@@ -9,8 +11,9 @@ export type MessageHandler = (msg: string, name: string) => void
 export type EmitHandler = (error: any, response: any) => void
 
 export interface ChatSettings {
+	boardId: string
 	roomId: string
-	name: string
+	user: User
 	messageHandler: MessageHandler
 }
 

@@ -1,4 +1,5 @@
 import {CLIENT_ID} from '../config'
+import {getBoard} from '../common/implementations/methods'
 import appIcon from './icon'
 
 const initChat = (breakoutChatRoomId: string) => {
@@ -43,20 +44,27 @@ const handleAddChatClick = async () => {
 }
 
 const initPlugin = async () => {
-	// @ts-ignore
-	miro.addListener(miro.enums.event.SELECTION_UPDATED, async () => {
-		const widgets = await miro.board.selection.get()
-		if (widgets.length === 1 && widgets[0].metadata[CLIENT_ID]?.isBreakoutChatButton) {
-			initChat(widgets[0].id)
-		}
-	})
+	let onClick: () => Promise<void>
+	const board = await getBoard()
+	if (board.hasReadAndWritePermissions) {
+		// @ts-ignore
+		miro.addListener(miro.enums.event.SELECTION_UPDATED, async () => {
+			const widgets = await miro.board.selection.get()
+			if (widgets.length === 1 && widgets[0].metadata[CLIENT_ID]?.isBreakoutChatButton) {
+				initChat(widgets[0].id)
+			}
+		})
+		onClick = handleAddChatClick
+	} else {
+		onClick = () => miro.showNotification('You do not have enough permissions to load the chat :(')
+	}
 
 	await miro.initialize({
 		extensionPoints: {
 			bottomBar: {
 				title: 'Create a new breakout chat',
 				svgIcon: appIcon,
-				onClick: handleAddChatClick,
+				onClick,
 			},
 		},
 	})
@@ -67,7 +75,7 @@ miro.onReady(async () => {
 	if (authorized) {
 		initPlugin()
 	} else {
-		const res = await miro.board.ui.openModal('not-authorized.html')
+		const res = await miro.board.ui.openModal('/not-authorized.html')
 		if (res === 'success') {
 			initPlugin()
 		}
