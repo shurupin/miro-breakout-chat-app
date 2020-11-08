@@ -1,5 +1,7 @@
 <script lang="ts">
-	import type {Message} from '../../interfaces/chat'
+	import type {
+		Message
+	} from '../../../common/interfaces/chat'
 	export let message: Message
 </script>
 
@@ -10,12 +12,17 @@
 		margin: 6px 0;
 	}
 
+	.message__container:first-child {
+		margin-top: auto;
+	}
+
 	.message__header {
 		margin-top: 12px;
 	}
 
 	.message__text {
 		margin: 6px 0px 0px 0px;
+		word-wrap: break-word;
 	}
 </style>
 
